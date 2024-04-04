@@ -1,47 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Copy Code Snippet</title>
-    <style>
-        .code-snippet {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-family: Consolas, monospace;
-            white-space: pre-wrap;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Snippet</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-okaidia.min.css">
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: "Courier New", monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .code-container {
+      position: relative;
+    }
+    .code {
+      background-color: black; /* Set the background color to black */
+      color: #fff; /* Set the text color to white. */
+      padding: 20px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #444;
+      color: #fff;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .copy-btn:focus {
+      outline: none;
+    }
+    .custom-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      border-radius: 5px;
+      display: none;
+      animation: flyUp 0.5s ease-out;
+    }
+    
+    @keyframes flyUp {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes flyDown {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(100%);
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>Copy Code Snippet</h1>
-    <p>Below is a code snippet that you can copy:</p>
-    <div class="code-snippet" id="codeSnippet">
-        <pre><code>
-            #include <iostream>
+  <div class="code-container">
+    <pre class="code language-lua" id="codeSnippet">
+      -- Lua code here
+      local example = true
 
-            int main() {
-                std::cout << "Hello, world!" << std::endl;
-                return 0;
-            }
-        </code></pre>
-    </div>
-    <button onclick="copyCode()">Copy Code</button>
+      if example == true then 
+        print("True")
+      end
+    </pre>
+    <button class="copy-btn" onclick="copyCode()">Copy</button>
+  </div>
+  <div class="custom-toast" id="customToast">Copied!</div>
 
-    <script>
-        function copyCode() {
-            const codeSnippet = document.getElementById('codeSnippet');
-            const codeText = codeSnippet.innerText;
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-lua.min.js"></script>
+  <script>
+    function copyCode() {
+      var code = document.getElementById("codeSnippet");
+      var range = document.createRange();
+      range.selectNode(code);
+      window.getSelection().removeAllRanges();
+      window.getSelection().addRange(range);
+      document.execCommand("copy");
+      window.getSelection().removeAllRanges();
 
-            navigator.clipboard.writeText(codeText)
-                .then(() => {
-                    alert('Code snippet copied to clipboard!');
-                })
-                .catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-        }
-    </script>
+      // Show custom toast notification
+      var toast = document.getElementById("customToast");
+      toast.innerText = "Copied!";
+      toast.style.display = "block";
+      setTimeout(function() {
+        toast.style.animation = "flyDown 0.5s ease-out";
+        setTimeout(function() {
+          toast.style.display = "none";
+          toast.style.animation = "flyUp 0.5s ease-out";
+        }, 500); // Wait for the animation to complete before hiding
+      }, 2000); // Show the toast for 2 seconds
+    }
+    Prism.highlightAll();
+  </script>
 </body>
 </html>
