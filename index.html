@@ -4,33 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TikTok Ban Countdown</title>
-    <script>
-        setInterval(function() {
-            const targetDate = new Date.UTC(2025, 1, 19, 23, 59, 59, 0);
-            const now = new Date();
-            const difference = targetDate - now;
-
-            if (difference <= 0) {
-                document.getElementById("countdown").innerHTML = "Countdown has expired.";
-                return; 
-            }
-
-            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours;
-            document.getElementById("minutes").innerText = minutes;
-            document.getElementById("seconds").innerText = seconds;
-        }, 1000);
-    </script>
 </head>
 <body>
-    <div id="countdown">
-        Countdown: <span id="days">0</span> days, <span id="hours">0</span> hours, 
-        <span id="minutes">0</span> minutes, <span id="seconds">0</span> seconds
+    <div id="countdown-box">
+        <div class="timer-row">
+        <div class="countdown-label">In:</div>
+        <div class="countdown" id="countdown-embed">00d 00h 00m 00s</div>
+        </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
+    <script>
+        var endDateEmbed = moment.tz("2025-01-19 23:59:59", "America/New_York").valueOf();
+        
+        function updateCountdownEmbed() {
+        var now = moment().tz("America/New_York").valueOf();
+        var distance = endDateEmbed - now;
+        if (distance < 0) {
+            document.getElementById("countdown-box").innerHTML = "• The countdown has ended — the deadline has passed •";
+        } else {
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("countdown-embed").innerHTML = (days < 10 ? "0" : "") + days + "d " + (hours < 10 ? "0" : "") + hours + "h " + (minutes < 10 ? "0" : "") + minutes + "m " + (seconds < 10 ? "0" : "") + seconds + "s ";
+        }
+        }
+        
+        setInterval(updateCountdownEmbed, 1000);
+    </script>
 </body>
 </html>
