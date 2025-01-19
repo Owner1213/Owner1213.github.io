@@ -5,28 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TikTok Ban Countdown</title>
     <script>
-		setInterval(function() { // stolen from 7grandad
-			const time = Date.UTC(2025, 1, 19, 23, 59, 59, 0)
-			const sec = Math.floor(time / 1e3);
+        setInterval(function() {
+            const targetDate = new Date.UTC(2025, 1, 19, 23, 59, 59, 0);
+            const now = new Date();
+            const difference = targetDate - now;
 
-			document.getElementById("days").innerText = Math.floor(
-				sec / 60 / 60 / 24
-			);
-			document.getElementById("hours").innerText = Math.floor(
-				(sec / 60 / 60) % 24
-			);
-			document.getElementById("minutes").innerText = Math.floor(
-				(sec / 60) % 60
-			);
-			document.getElementById("seconds").innerText = sec % 60;
-		}, 1e2);
-	</script>
+            if (difference <= 0) {
+                document.getElementById("countdown").innerHTML = "Countdown has expired.";
+                return; 
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+        }, 1000);
+    </script>
 </head>
 <body>
-    TikTok will be banned in
-    <br />
-    <span id="days">0</span> days, <span id="hours">0</span> hours,
-    <span id="minutes">0</span> minutes, and
-    <span id="seconds">0</span> seconds
+    <div id="countdown">
+        Countdown: <span id="days">0</span> days, <span id="hours">0</span> hours, 
+        <span id="minutes">0</span> minutes, <span id="seconds">0</span> seconds
+    </div>
 </body>
 </html>
