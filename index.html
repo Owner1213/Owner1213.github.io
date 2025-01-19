@@ -6,8 +6,8 @@
     <title>TikTok Ban Countdown</title>
     <script>
 		setInterval(function() { // stolen from 7grandad
-			const timeSince = Date.now() - Date.UTC(2025, 1, 19, 23, 59, 59, 0)
-			const sec = Math.floor(timeSince / 1e3);
+			const time = Date.UTC(2025, 1, 19, 23, 59, 59, 0)
+			const sec = Math.floor(time / 1e3);
 
 			document.getElementById("days").innerText = Math.floor(
 				sec / 60 / 60 / 24
@@ -23,7 +23,7 @@
 	</script>
 </head>
 <body>
-    TikTik will be banned in
+    TikTok will be banned in
     <br />
     <span id="days">0</span> days, <span id="hours">0</span> hours,
     <span id="minutes">0</span> minutes, and
